@@ -1,0 +1,110 @@
+<!-- templates/tweet/home.html -->
+{% extends 'base.html' %}
+{% comment %} 장고 템플릿 문법은 html 안에서 수정하는 것 {% endcomment %}
+{% block content %}
+    <div class="container timeline-container">
+        <div class="row">
+            <!-- 왼쪽 컬럼 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ productname }}</h5>
+                        
+                        <p class="card-text">{{product}}</p>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 오른 쪽 컬럼-->
+            <div class="col-md-7">
+                <!-- 글을 작성 하는 곳 -->
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">상품등록</h5>
+                                        <p>
+                                        <form action ="/IM/" method="post" name ="product_create">
+                                            {% csrf_token %}
+                                            {% comment %} 암호화중 {% endcomment %}
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" id="basic-addon1">상품명</span>
+                                                <input type="text" class="form-control" placeholder="product-name"id="name" name="name" aria-label="product-name" aria-describedby="basic-addon1">
+                                              </div>
+                                              <div class="input-group flex-nowrap">
+                                                <span class="input-group-text" id="addon-wrapping">상품코드</span>
+                                                <input type="text" class="form-control" name="code" id= "code"placeholder="code" aria-label="Username" aria-describedby="addon-wrapping">
+                                              </div>
+
+                                              <div class="input-group mb-3">
+                                                <span class="input-group-text">₩</span>
+                                                <input type="text"name="price" id="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                                <span class="input-group-text">상품가격</span>
+                                              </div>
+
+                                              <div class="input-group mb-3">
+                                                <button class="btn btn-outline-secondary" type="button">Button</button>
+                                                <select class="form-select" name="size"id="inputGroupSelect03" aria-label="Example select with button addon">
+                                                  <option selected>Choose...</option>
+                                                  <option value="S">small</option>
+                                                  <option value="M">midum</option>
+                                                  <option value="L">large</option>
+                                                  <option value="F">free</option>
+                                                </select>
+                                              </div>
+
+                                              <div class="input-group" >
+                                                <span class="input-group-text">상품설명</span>
+                                                <textarea class="form-control" aria-label="With textarea" name ="description"></textarea>
+                                              </div>
+
+                                            <button type="submit" class="btn btn-primary" style="float:right;">등록</button>
+                                        {% comment %} 타입 섭밋은 데이터보내줌 {% endcomment %}
+                                        </form>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!-- 작성 된 글이 나오는 곳 -->
+                <div class="row">
+                    {% for p in product %}
+                    <div class="col-md-12 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                             
+                                <div style="text-align: right">
+                                    <a href="/IM/delete/{{ p.id }}">
+                                        <span class="badge rounded-pill bg-danger">물품삭제</span>
+                                    </a>
+                                </div>
+                       
+                                                    <div style="text-align: right">
+                                                        <a href="/IM/{{ p.id }}">
+                                                            <span class="badge rounded-pill bg-success">재고확인</span>
+                                                        </a>
+                                                    </div>
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">{{ p.name }}</h5>
+                                    </div>
+                                    <div style="text-align: right">
+                                        <span style="font-size: small">{{ p }}-{{ p.date|timesince }} 전</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+               </div>
+
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+{% endblock %}
